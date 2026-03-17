@@ -351,6 +351,18 @@
         setAudit(["🚫 Validation blocked (no file)"]);
         return;
       }
+      const userClearance = "SECRET";
+const category = document.getElementById("category").value;
+
+if (category === "Top Secret" && userClearance !== "TOP SECRET") {
+  setResults([{ type: "error", text: "❌ Upload blocked: clearance level too low for Top Secret documents." }]);
+  setAudit([
+    "🚫 Clearance violation detected",
+    "❌ User clearance: " + userClearance,
+    "❌ Attempted document level: " + category
+  ]);
+  return;
+}
 
       // Simulated scanning effect (demo-ready)
       validateBtn.disabled = true;
