@@ -6,108 +6,246 @@
   <title>PV Classified</title>
 
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #eef1f5; color: #1d2939; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #eef1f5;
+      color: #1d2939;
+    }
 
     nav {
-      background: #4b2e83; color: white; padding: 14px 24px;
-      display: flex; justify-content: space-between; align-items: center;
+      background: #4b2e83;
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    nav a { color: white; text-decoration: none; margin-left: 18px; font-size: 14px; }
-    nav a:hover { opacity: 0.85; }
 
-    .hero { padding: 40px 24px 10px; max-width: 1100px; margin: auto; }
-    .hero h2 { margin: 0; font-size: 26px; }
-    .hero p { margin-top: 10px; color: #667085; }
-    .hero-divider { height: 1px; background: #e4e7ec; margin: 12px 0 20px; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 14px;
+    }
 
-    .system-status{
-      font-size: 11px; background: #e7f6ec; padding: 4px 8px; border-radius: 6px;
-      margin-left: 10px; vertical-align: middle;
+    nav a:hover {
+      opacity: 0.85;
+    }
+
+    .hero {
+      padding: 40px 24px 10px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      color: #667085;
+    }
+
+    .hero-divider {
+      height: 1px;
+      background: #e4e7ec;
+      margin: 12px 0 20px;
+    }
+
+    .system-status {
+      font-size: 11px;
+      background: #e7f6ec;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-left: 10px;
+      vertical-align: middle;
     }
 
     main {
-      max-width: 1100px; margin: 0 auto 40px; padding: 0 24px;
-      display: grid; grid-template-columns: 2fr 1fr; gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
     }
 
     .card {
-      background: white; padding: 18px; border-radius: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.06);
+      background: white;
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
     label {
-      display: block; font-weight: 600; margin: 12px 0 6px;
-      font-size: 14px; color: #344054;
+      display: block;
+      font-weight: 600;
+      margin: 12px 0 6px;
+      font-size: 14px;
+      color: #344054;
     }
 
-    input, select, textarea {
-      width: 100%; padding: 10px; border-radius: 8px;
-      border: 1px solid #e4e7ec; font-size: 14px; background: #fcfcfd;
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e4e7ec;
+      font-size: 14px;
+      background: #fcfcfd;
+      box-sizing: border-box;
     }
 
-    input:focus, select:focus, textarea:focus {
-      outline: none; border-color: #4b2e83;
-      box-shadow: 0 0 0 3px rgba(75,46,131,0.15);
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4b2e83;
+      box-shadow: 0 0 0 3px rgba(75, 46, 131, 0.15);
       background: white;
     }
 
-    textarea { min-height: 100px; resize: vertical; }
-    .hint { font-size: 12px; color: #667085; margin-top: 4px; }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
 
-    .actions { margin-top: 16px; display: flex; gap: 10px; }
+    .hint {
+      font-size: 12px;
+      color: #667085;
+      margin-top: 4px;
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+    }
 
     button {
-      border: none; border-radius: 10px; padding: 10px 14px;
-      font-weight: bold; cursor: pointer; transition: 0.2s ease;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
-    .primary { background: #4b2e83; color: white; }
-    .secondary { background: #e4e7ec; }
-    button:hover { transform: translateY(-1px); }
-    button:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .primary {
+      background: #4b2e83;
+      color: white;
+    }
+
+    .secondary {
+      background: #e4e7ec;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     .badge {
-      display: inline-block; background: #4b2e83; color: white;
-      padding: 4px 8px; border-radius: 6px; font-size: 11px; margin-left: 6px;
+      display: inline-block;
+      background: #4b2e83;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      margin-left: 6px;
     }
 
     .banner {
-      padding: 10px; border-radius: 10px; font-weight: bold;
-      text-align: center; margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
     }
-    .secret { background: #f4c430; color: black; }
+
+    .secret {
+      background: #f4c430;
+      color: black;
+    }
 
     .results div {
-      padding: 10px; border-radius: 8px; margin-bottom: 8px;
-      font-size: 13px; transition: 0.2s ease;
-      display: flex; align-items: center; gap: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      transition: 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .results div:hover { transform: translateX(2px); }
 
-    .warning { background: #fff4e5; }
-    .error { background: #ffe2e2; }
-    .success { background: #e7f6ec; }
-    .info { background: #eef4ff; }
+    .results div:hover {
+      transform: translateX(2px);
+    }
+
+    .warning {
+      background: #fff4e5;
+    }
+
+    .error {
+      background: #ffe2e2;
+    }
+
+    .success {
+      background: #e7f6ec;
+    }
+
+    .info {
+      background: #eef4ff;
+    }
 
     .audit-log {
-      margin-top: 16px; background: #f9fafb; padding: 10px;
-      border-radius: 10px; font-size: 12px;
+      margin-top: 16px;
+      background: #f9fafb;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 12px;
     }
-    .audit-log div { margin-bottom: 6px; }
+
+    .audit-log div {
+      margin-bottom: 6px;
+    }
 
     .file-meta {
-      margin-top: 8px; font-size: 12px; color: #475467;
-      background: #f9fafb; border: 1px solid #e4e7ec;
-      border-radius: 10px; padding: 10px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #475467;
+      background: #f9fafb;
+      border: 1px solid #e4e7ec;
+      border-radius: 10px;
+      padding: 10px;
     }
 
-    footer { text-align: center; padding: 20px; font-size: 12px; color: #667085; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #667085;
+    }
 
-    @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
 <body>
-
   <nav>
     <div><strong>PV Classified</strong></div>
     <div>
@@ -133,13 +271,11 @@
   </section>
 
   <main>
-
     <!-- LEFT SIDE -->
     <section class="card">
       <h3>Upload & Document Entry</h3>
 
       <form id="pvForm" novalidate>
-
         <label>
           Upload Document <span class="badge">REQUIRED</span>
         </label>
@@ -182,7 +318,12 @@
         <label>
           Portion Markings <span class="badge">REQUIRED</span>
         </label>
-        <textarea id="portion" required minlength="10" placeholder="Example: (S) This paragraph contains..."></textarea>
+        <textarea
+          id="portion"
+          required
+          minlength="10"
+          placeholder="Example: (S) This paragraph contains..."
+        ></textarea>
         <div class="hint">Minimum 10 characters</div>
 
         <label>
@@ -190,22 +331,20 @@
         </label>
         <input id="email" type="email" required placeholder="name@pvamu.edu" />
 
-        <div style="margin-top:12px;">
-          <input id="confirm" type="checkbox" required />
-          I confirm classification accuracy
+        <div style="margin-top:12px; display:flex; align-items:center; gap:8px;">
+          <input id="confirm" type="checkbox" required style="width:auto;" />
+          <label for="confirm" style="margin:0; font-weight:normal;">I confirm classification accuracy</label>
         </div>
 
         <div class="actions">
           <button id="validateBtn" class="primary" type="submit">Validate Entry</button>
           <button class="secondary" type="reset">Clear</button>
         </div>
-
       </form>
     </section>
 
     <!-- RIGHT SIDE -->
     <section class="card">
-
       <div class="banner secret" id="bannerChip">
         SECRET // REL TO USA
       </div>
@@ -224,9 +363,7 @@
         <strong>Recent System Activity</strong>
         <div>— Waiting for validation…</div>
       </div>
-
     </section>
-
   </main>
 
   <footer>
@@ -234,7 +371,6 @@
   </footer>
 
   <script>
-    // Allowed document types for upload (extension-based)
     const ALLOWED_EXT = ["pdf", "docx", "txt", "html"];
     const MAX_MB = 10;
 
@@ -244,9 +380,9 @@
     const results = document.getElementById("results");
     const auditLog = document.getElementById("auditLog");
     const validateBtn = document.getElementById("validateBtn");
-
     const bannerSelect = document.getElementById("banner");
     const bannerChip = document.getElementById("bannerChip");
+    const categorySelect = document.getElementById("category");
 
     function bytesToMB(bytes) {
       return (bytes / (1024 * 1024)).toFixed(2);
@@ -255,6 +391,10 @@
     function getExt(filename) {
       const parts = filename.split(".");
       return parts.length > 1 ? parts.pop().toLowerCase() : "";
+    }
+
+    function generateDocID() {
+      return "PV-" + Math.floor(10000 + Math.random() * 90000);
     }
 
     function setResults(items) {
@@ -269,24 +409,54 @@
 
     function setAudit(lines) {
       const html = ["<strong>Recent System Activity</strong>"]
-        .concat(lines.map(l => `<div>${l}</div>`))
+        .concat(lines.map(line => `<div>${line}</div>`))
         .join("");
       auditLog.innerHTML = html;
     }
 
     function updateBannerChip() {
       const v = bannerSelect.value;
-      if (v === "TS") bannerChip.textContent = "TOP SECRET // REL TO USA";
-      else if (v === "S") bannerChip.textContent = "SECRET // REL TO USA";
-      else if (v === "C") bannerChip.textContent = "CONFIDENTIAL // REL TO USA";
-      else if (v === "U") bannerChip.textContent = "UNCLASSIFIED";
-      else bannerChip.textContent = "SECRET // REL TO USA";
+
+      if (v === "TS") {
+        bannerChip.textContent = "TOP SECRET // REL TO USA";
+        bannerChip.style.background = "#dc2626";
+        bannerChip.style.color = "white";
+      } else if (v === "S") {
+        bannerChip.textContent = "SECRET // REL TO USA";
+        bannerChip.style.background = "#f4c430";
+        bannerChip.style.color = "black";
+      } else if (v === "C") {
+        bannerChip.textContent = "CONFIDENTIAL // REL TO USA";
+        bannerChip.style.background = "#f97316";
+        bannerChip.style.color = "white";
+      } else if (v === "U") {
+        bannerChip.textContent = "UNCLASSIFIED";
+        bannerChip.style.background = "#22c55e";
+        bannerChip.style.color = "white";
+      } else {
+        bannerChip.textContent = "SECRET // REL TO USA";
+        bannerChip.style.background = "#f4c430";
+        bannerChip.style.color = "black";
+      }
     }
 
     bannerSelect.addEventListener("change", updateBannerChip);
 
+    categorySelect.addEventListener("change", (e) => {
+      if (e.target.value === "Top Secret") {
+        setResults([
+          { type: "warning", text: "⚠ Top Secret selection requires highest clearance." }
+        ]);
+        setAudit([
+          "⚠ Top Secret category selected",
+          "— Awaiting validation request"
+        ]);
+      }
+    });
+
     fileInput.addEventListener("change", () => {
       const f = fileInput.files && fileInput.files[0];
+
       if (!f) {
         fileMeta.style.display = "none";
         fileMeta.textContent = "";
@@ -296,7 +466,6 @@
       const ext = getExt(f.name);
       const sizeMB = Number(bytesToMB(f.size));
 
-      // Validate extension
       if (!ALLOWED_EXT.includes(ext)) {
         alert("Invalid file type. Allowed: PDF, DOCX, TXT, HTML.");
         fileInput.value = "";
@@ -306,7 +475,6 @@
         return;
       }
 
-      // Validate size
       if (sizeMB > MAX_MB) {
         alert("File too large. Max size is 10 MB.");
         fileInput.value = "";
@@ -316,7 +484,6 @@
         return;
       }
 
-      // Display file info
       fileMeta.style.display = "block";
       fileMeta.innerHTML =
         `<div><strong>Selected File:</strong> ${f.name}</div>` +
@@ -328,19 +495,26 @@
     });
 
     form.addEventListener("reset", () => {
-      fileMeta.style.display = "none";
-      fileMeta.textContent = "";
-      bannerChip.textContent = "SECRET // REL TO USA";
-      setResults([{ type: "info", text: "ℹ Upload a document, then click Validate Entry to simulate scanning." }]);
-      setAudit(["— Waiting for validation…"]);
+      setTimeout(() => {
+        fileMeta.style.display = "none";
+        fileMeta.textContent = "";
+        bannerSelect.value = "";
+        categorySelect.value = "";
+        updateBannerChip();
+        setResults([
+          { type: "info", text: "ℹ Upload a document, then click Validate Entry to simulate scanning." }
+        ]);
+        setAudit(["— Waiting for validation…"]);
+      }, 0);
     });
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Browser validation (required fields, email format, minlength, etc.)
       if (!form.checkValidity()) {
-        setResults([{ type: "error", text: "❌ Please complete all required fields correctly before validating." }]);
+        setResults([
+          { type: "error", text: "❌ Please complete all required fields correctly before validating." }
+        ]);
         setAudit(["🚫 Validation blocked (missing/invalid fields)"]);
         return;
       }
@@ -351,47 +525,81 @@
         setAudit(["🚫 Validation blocked (no file)"]);
         return;
       }
-      const userClearance = "SECRET";
-const category = document.getElementById("category").value;
 
-if (category === "Top Secret" && userClearance !== "TOP SECRET") {
-  setResults([{ type: "error", text: "❌ Upload blocked: clearance level too low for Top Secret documents." }]);
-  setAudit([
-    "🚫 Clearance violation detected",
-    "❌ User clearance: " + userClearance,
-    "❌ Attempted document level: " + category
-  ]);
-  return;
-}
+      const userClearance = document.getElementById("clearance").textContent.trim();
+      const category = document.getElementById("category").value;
+      const banner = document.getElementById("banner").value;
+      const docID = generateDocID();
+      const timestamp = new Date().toLocaleString();
 
-      // Simulated scanning effect (demo-ready)
+      const expectedBanner = {
+        "Confidential": "C",
+        "Secret": "S",
+        "Top Secret": "TS"
+      };
+
+      if (category === "Top Secret" && userClearance !== "TOP SECRET") {
+        setResults([
+          { type: "error", text: "❌ Upload blocked: clearance level too low for Top Secret documents." }
+        ]);
+        setAudit([
+          "🚫 Clearance violation detected",
+          "❌ User clearance: " + userClearance,
+          "❌ Attempted document level: " + category,
+          "🕒 Time: " + timestamp
+        ]);
+        return;
+      }
+
+      if (banner !== expectedBanner[category]) {
+        setResults([
+          { type: "error", text: "❌ Banner line does not match selected category." }
+        ]);
+        setAudit([
+          "🚫 Validation blocked (banner mismatch)",
+          "Selected category: " + category,
+          "Selected banner: " + banner,
+          "🕒 Time: " + timestamp
+        ]);
+        return;
+      }
+
       validateBtn.disabled = true;
+
       setResults([
         { type: "info", text: "🔎 Scanning document..." },
         { type: "info", text: "🧠 Analyzing banner lines + portion markings..." }
       ]);
-      setAudit(["✔ Validation initiated", "🔎 Scan started"]);
+
+      setAudit([
+        "✔ Validation initiated",
+        "📄 Document ID: " + docID,
+        "🕒 Time: " + timestamp,
+        "🔎 Scan started"
+      ]);
 
       setTimeout(() => {
-        // Demo outputs (you can tweak these to match your live demo scenario)
         setResults([
           { type: "warning", text: "⚠ Missing portion marking detected in one section." },
           { type: "error", text: "❌ Banner level mismatch found (portion level exceeds banner)." },
           { type: "success", text: "✅ Document structure validated (format & layout checks passed)." }
         ]);
+
         setAudit([
           "✔ Scan complete",
+          "📄 Document ID: " + docID,
+          "🕒 Time: " + timestamp,
           "⚠ Portion marking missing (1)",
           "❌ Banner/portion mismatch (1)",
           "✔ Results displayed to user"
         ]);
+
         validateBtn.disabled = false;
+        alert("Validation complete. Review dashboard results.");
       }, 900);
     });
 
-    // Initial state
     updateBannerChip();
   </script>
-
 </body>
 </html>
