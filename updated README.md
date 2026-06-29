@@ -3,7 +3,7 @@
 > NSA-Sponsored Senior Design Project — Prairie View A&M University | "Sistas in Syntax" Team
 > Fall 2025 – Spring 2026
 
-> **Note:** This repository contains the front-end components I personally developed for this project. The full backend, validation logic, and remaining team code are not included here, as portions of this NSA-sponsored project are not publicly shareable.
+> **Note:** This repository contains the front-end components. The full backend, validation logic, and remaining team code are not included here, as portions of this NSA-sponsored project are not publicly shareable.
 
 ## Overview
 
