@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PV Classified</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #eef1f5;
+      color: #1d2939;
+    }
+
+    nav {
+      background: #4b2e83;
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .brand { font-weight: bold; font-size: 1.2rem; }
+
+    nav a {
+      color: #d6c6f0;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    nav a:hover { color: white; }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+    .user-info .badge {
+      background: rgba(255,255,255,0.15);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+    .user-info .logout-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .user-info .logout-btn:hover { background: rgba(255,255,255,0.35); }
+
+    .container {
+      display: flex;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 28px auto;
+      padding: 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      flex: 1;
+      min-width: 320px;
+    }
+
+    h2 { margin-top: 0; color: #4b2e83; font-size: 1.15rem; }
+    h3 { color: #4b2e83; font-size: 1rem; margin: 18px 0 8px; }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 0.92rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 9px 10px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.93rem;
+      box-sizing: border-box;
+    }
+
+    textarea { resize: vertical; min-height: 50px; }
+
+    input[type="file"] { margin-top: 6px; }
+
+    .file-info {
+      background: #f3f0ff;
+      border: 1px solid #d6c6f0;
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      display: none;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 22px;
+      background: #4b2e83;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn:hover:not(:disabled) { background: #3a2268; }
+
+    .btn-secondary {
+      background: transparent;
+      color: #4b2e83;
+      border: 2px solid #4b2e83;
+    }
+    .btn-secondary:hover:not(:disabled) { background: #f3f0ff; }
+
+    .banner-chip {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: white;
+      margin-top: 6px;
+    }
+
+    .result-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      min-height: 60px;
+    }
+
+    .result-item {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .result-item:last-child { border-bottom: none; }
+
+    .pass { color: #16a34a; }
+    .fail { color: #dc2626; }
+    .warn { color: #d97706; }
+
+    .audit-box {
+      background: #1d2939;
+      color: #a3e635;
+      border-radius: 6px;
+      padding: 14px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.84rem;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .audit-box div { padding: 3px 0; }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+    .doc-table th, .doc-table td {
+      border: 1px solid #ddd;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .doc-table th { background: #4b2e83; color: white; }
+    .doc-table tr:nth-child(even) { background: #f9f9ff; }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .status-accepted { background: #dcfce7; color: #166534; }
+    .status-flagged  { background: #fef9c3; color: #854d0e; }
+    .status-denied   { background: #fee2e2; color: #991b1b; }
+
+    /* ── Auth screens ─────────────────────────────────────────── */
+    .auth-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+    }
+    .auth-card {
+      background: white;
+      border-radius: 12px;
+      padding: 36px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 420px;
+    }
+    .auth-card h2 { text-align: center; margin-bottom: 6px; }
+    .auth-card .subtitle {
+      text-align: center;
+      color: #667;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .auth-card .error-msg {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .auth-card .success-msg {
+      background: #dcfce7;
+      color: #166534;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .auth-toggle {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.9rem;
+    }
+    .auth-toggle a {
+      color: #4b2e83;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════ AUTH SCREEN ══════════════════════════════ -->
+  <div id="auth-screen">
+    <nav>
+      <span class="brand">PV Classified System</span>
+    </nav>
+
+    <!-- LOGIN -->
+    <div class="auth-wrapper" id="login-view">
+      <div class="auth-card">
+        <h2>Secure Login</h2>
+        <p class="subtitle">Enter your credentials to access the system</p>
+        <div class="error-msg" id="loginError"></div>
+        <form id="loginForm">
+          <label>Username</label>
+          <input type="text" id="loginUser" placeholder="your.username" required />
+          <label>Password</label>
+          <input type="password" id="loginPass" placeholder="Min 6 characters" required />
+          <button type="submit" class="btn" style="width:100%;">Login</button>
+        </form>
+        <div class="auth-toggle">
+          No account? <a onclick="showAuthView('register')">Register here</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="auth-wrapper" id="register-view" style="display:none;">
+      <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="subtitle">Register for access to the classified system</p>
+        <div class="error-msg" id="registerError"></div>
+        <div class="success-msg" id="registerSuccess"></div>
+        <form id="registerForm">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="John Smith" required />
+          <label>Username</label>
+          <input type="text" id="regUser" placeholder="Min 3 characters" required />
+          <label>Password</label>
+          <input type="password" id="regPass" placeholder="Min 6 characters" required />
+          <label>Clearance Level</label>
+          <select id="regClearance">
+            <option value="UNCLASSIFIED">UNCLASSIFIED</option>
+            <option value="CONFIDENTIAL">CONFIDENTIAL</option>
+            <option value="SECRET" selected>SECRET</option>
+            <option value="TOP SECRET">TOP SECRET</option>
+          </select>
+          <button type="submit" class="btn" style="width:100%;">Register</button>
+        </form>
+        <div class="auth-toggle">
+          Already have an account? <a onclick="showAuthView('login')">Login here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ MAIN APP (hidden until logged in) ═══════ -->
+  <div id="app-screen" style="display:none;">
+    <nav>
+      <span class="brand">PV Classified System</span>
+      <div style="display:flex; align-items:center; gap:20px;">
+        <div>
+          <a onclick="showSection('upload')">Upload</a>
+          <a onclick="showSection('documents')">Documents</a>
+          <a onclick="showSection('auditAll')">Audit Logs</a>
+        </div>
+        <div class="user-info">
+          <span id="navUserName"></span>
+          <span class="badge" id="navClearance"></span>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" id="section-upload">
+      <!-- LEFT CARD — Upload Form -->
+      <div class="card">
+        <h2>Secure Document Upload</h2>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+          <label>File (PDF, DOCX, TXT, HTML — max 10 MB)</label>
+          <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.txt,.html" />
+          <div class="file-info" id="fileInfo"></div>
+
+          <label>Document Title</label>
+          <input type="text" id="title" name="title" placeholder="Min 3 characters" required />
+
+          <label>Category</label>
+          <select id="category" name="category" required>
+            <option value="">— select —</option>
+            <option value="Intelligence">Intelligence</option>
+            <option value="Operations">Operations</option>
+            <option value="Policy">Policy</option>
+            <option value="Technical">Technical</option>
+            <option value="Administrative">Administrative</option>
+          </select>
+
+          <label>Classification Banner</label>
+          <select id="banner" name="banner" onchange="updateBannerChip()">
+            <option value="UNCLASSIFIED">UNCLASSIFIED</option>
+            <option value="CONFIDENTIAL">CONFIDENTIAL</option>
+            <option value="SECRET" selected>SECRET</option>
+            <option value="TOP SECRET">TOP SECRET</option>
+          </select>
+          <span class="banner-chip" id="bannerChip">SECRET</span>
+
+          <label>Portion Markings</label>
+          <textarea id="portionMarks" name="portionMarks" placeholder="e.g. (S) paragraph one, (U) paragraph two"></textarea>
+
+          <label>Submitter Email</label>
+          <input type="email" id="email" name="email" placeholder="you@agency.gov" required />
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="confirmCheck" />
+            <label for="confirmCheck" style="margin:0; font-weight:normal;">
+              I confirm this document is properly marked and authorized for submission.
+            </label>
+          </div>
+
+          <button type="submit" class="btn" id="submitBtn" disabled>Upload &amp; Validate</button>
+        </form>
+      </div>
+
+      <!-- RIGHT CARD — Validation Dashboard -->
+      <div class="card">
+        <h2>Validation Dashboard</h2>
+        <div class="result-box" id="resultBox">
+          <div style="color:#999;">Upload a document to see validation results.</div>
+        </div>
+
+        <h3>Audit Trail</h3>
+        <div class="audit-box" id="auditBox">
+          <div style="color:#666;">Waiting for upload...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS SECTION -->
+    <div class="container" id="section-documents" style="display:none;">
+      <div class="card" style="flex:1 1 100%;">
+        <h2>Uploaded Documents</h2>
+        <button class="btn" onclick="loadDocuments()" style="margin-bottom:12px;">Refresh</button>
+        <div id="docTableContainer">
+          <p style="color:#999;">Click Refresh to load documents.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIT ALL SECTION -->
+    <div class="container" id="section-auditAll" style="display:none;">
+      <div class="card" style="flex:1 1 100%;">
+        <h2>Full Audit Log</h2>
+        <button class="btn" onclick="loadAllAudit()" style="margin-bottom:12px;">Refresh</button>
+        <div class="audit-box" id="auditAllBox" style="max-height:500px;">
+          <div style="color:#666;">Click Refresh to load audit logs.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Token & user state ─────────────────────────────────────
+    let authToken = localStorage.getItem("pv_token") || null;
+    let currentUser = JSON.parse(localStorage.getItem("pv_user") || "null");
+
+    // ── Helper: API call with token ────────────────────────────
+    function authFetch(url, options = {}) {
+      if (!options.headers) options.headers = {};
+      if (authToken) {
+        options.headers["Authorization"] = "Bearer " + authToken;
+      }
+      return fetch(url, options);
+    }
+
+    // ── Auth view toggle ───────────────────────────────────────
+    function showAuthView(view) {
+      document.getElementById("login-view").style.display = view === "login" ? "flex" : "none";
+      document.getElementById("register-view").style.display = view === "register" ? "flex" : "none";
+      // Clear errors
+      document.getElementById("loginError").style.display = "none";
+      document.getElementById("registerError").style.display = "none";
+      document.getElementById("registerSuccess").style.display = "none";
+    }
+
+    // ── Show app or auth ───────────────────────────────────────
+    function checkAuth() {
+      if (authToken && currentUser) {
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("app-screen").style.display = "block";
+        document.getElementById("navUserName").textContent = currentUser.fullName;
+        document.getElementById("navClearance").textContent = currentUser.clearance;
+      } else {
+        document.getElementById("auth-screen").style.display = "block";
+        document.getElementById("app-screen").style.display = "none";
+      }
+    }
+
+    // ── Logout ─────────────────────────────────────────────────
+    function logout() {
+      authToken = null;
+      currentUser = null;
+      localStorage.removeItem("pv_token");
+      localStorage.removeItem("pv_user");
+      showAuthView("login");
+      checkAuth();
+    }
+
+    // ── LOGIN ──────────────────────────────────────────────────
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("loginError");
+      errEl.style.display = "none";
+
+      const username = document.getElementById("loginUser").value;
+      const password = document.getElementById("loginPass").value;
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          authToken = data.token;
+          currentUser = data.user;
+          localStorage.setItem("pv_token", data.token);
+          localStorage.setItem("pv_user", JSON.stringify(data.user));
+          checkAuth();
+        } else {
+          errEl.textContent = data.error;
+          errEl.style.display = "block";
+        }
+      } catch (err) {
+        errEl.textContent = "Network error: " + err.message;
+        errEl.style.display = "block";
+      }
+    });
+
+    // ── REGISTER ───────────────────────────────────────────────
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("registerError");
+      const successEl = document.getElementById("registerSuccess");
+      errEl.style.display = "none";
+      successEl.style.display = "none";
+
+      const fullName = document.getElementById("regName").value;
+      const username = document.getElementById("regUser").value;
+      const password = document.getElementById("regPass").value;
+      const clearance = document.getElementById("regClearance").value;
+
+      try {
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password, fullName, clearance }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          successEl.textContent = "Account created. You can now login.";
+          successEl.style.display = "block";
+          document.getElementById("registerForm").reset();
+        } else {
+          errEl.textContent = data.error;
+          if (data.missing) errEl.textContent += " — " + data.missing.join(", ");
+          errEl.style.display = "block";
+        }
+      } catch (err) {
+        errEl.textContent = "Network error: " + err.message;
+        errEl.style.display = "block";
+      }
+    });
+
+    // ── Section navigation ─────────────────────────────────────
+    function showSection(name) {
+      document.getElementById("section-upload").style.display = name === "upload" ? "flex" : "none";
+      document.getElementById("section-documents").style.display = name === "documents" ? "flex" : "none";
+      document.getElementById("section-auditAll").style.display = name === "auditAll" ? "flex" : "none";
+
+      if (name === "documents") loadDocuments();
+      if (name === "auditAll") loadAllAudit();
+    }
+
+    // ── Banner chip colors ─────────────────────────────────────
+    const bannerColors = {
+      UNCLASSIFIED: "#16a34a",
+      CONFIDENTIAL: "#2563eb",
+      SECRET: "#dc2626",
+      "TOP SECRET": "#d97706",
+    };
+
+    function updateBannerChip() {
+      const val = document.getElementById("banner").value;
+      const chip = document.getElementById("bannerChip");
+      chip.textContent = val;
+      chip.style.background = bannerColors[val] || "#666";
+    }
+
+    // ── File info preview ──────────────────────────────────────
+    document.getElementById("fileInput").addEventListener("change", function () {
+      const info = document.getElementById("fileInfo");
+      if (this.files.length > 0) {
+        const f = this.files[0];
+        const ext = f.name.split(".").pop().toLowerCase();
+        const sizeMB = (f.size / (1024 * 1024)).toFixed(2);
+        info.innerHTML = `<strong>${f.name}</strong><br/>Extension: .${ext} | Size: ${sizeMB} MB`;
+        info.style.display = "block";
+      } else {
+        info.style.display = "none";
+      }
+    });
+
+    // ── Enable submit only when checkbox is checked ────────────
+    document.getElementById("confirmCheck").addEventListener("change", function () {
+      document.getElementById("submitBtn").disabled = !this.checked;
+    });
+
+    // ── Form submit → POST /api/upload ─────────────────────────
+    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const btn = document.getElementById("submitBtn");
+      const resultBox = document.getElementById("resultBox");
+      const auditBox = document.getElementById("auditBox");
+
+      btn.disabled = true;
+      resultBox.innerHTML = '<div style="color:#999;">Uploading and validating...</div>';
+      auditBox.innerHTML = '<div style="color:#666;">Processing...</div>';
+
+      const formData = new FormData();
+      formData.append("file", document.getElementById("fileInput").files[0]);
+      formData.append("title", document.getElementById("title").value);
+      formData.append("category", document.getElementById("category").value);
+      formData.append("banner", document.getElementById("banner").value);
+      formData.append("portionMarks", document.getElementById("portionMarks").value);
+      formData.append("email", document.getElementById("email").value);
+
+      try {
+        const res = await authFetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+
+        if (res.status === 401 || res.status === 403) {
+          logout();
+          return;
+        }
+
+        if (data.success) {
+          let html = `<div class="result-item pass">✔ Document uploaded successfully</div>`;
+          html += `<div class="result-item"><strong>Doc ID:</strong> ${data.docId}</div>`;
+          html += `<div class="result-item"><strong>Status:</strong> <span class="status-badge status-${data.status}">${data.status.toUpperCase()}</span></div>`;
+          html += `<div class="result-item pass">✔ File type check — PASS</div>`;
+          html += `<div class="result-item pass">✔ File size check — PASS (${(data.file.size / 1024).toFixed(1)} KB)</div>`;
+          html += `<div class="result-item pass">✔ Clearance check — PASS (your clearance: ${currentUser.clearance})</div>`;
+
+          // ── Content scan results ──────────────────────────────
+          if (data.contentScan && data.contentScan.scanResults) {
+            const sr = data.contentScan.scanResults;
+            const ex = data.contentScan.extraction;
+
+            html += `<div style="border-top:2px solid #4b2e83; margin-top:12px; padding-top:10px;">`;
+            html += `<strong style="color:#4b2e83;">Content Scan Results</strong>`;
+            html += `<div class="result-item" style="color:#667;">Scanned ${ex.paragraphCount} paragraphs, ${ex.charCount.toLocaleString()} characters, ${ex.pageCount} page(s)</div>`;
+
+            // Show each summary item with proper color
+            sr.summary.forEach(item => {
+              const cls = item.status === 'pass' ? 'pass' : item.status === 'fail' ? 'fail' : item.status === 'warn' ? 'warn' : '';
+              const icon = item.status === 'pass' ? '✔' : item.status === 'fail' ? '✘' : item.status === 'warn' ? '⚠' : 'ℹ';
+              html += `<div class="result-item ${cls}">${icon} ${item.text}</div>`;
+            });
+
+            // Banner lines found
+            if (sr.bannerLines.length > 0) {
+              html += `<div style="margin-top:8px;"><strong>Banner lines found in document:</strong></div>`;
+              sr.bannerLines.forEach(b => {
+                html += `<div class="result-item" style="font-family:monospace; font-size:0.85rem;">Line ${b.line}: "${b.text}" → ${b.level}</div>`;
+              });
+            }
+
+            // Portion markings detail
+            if (sr.portionMarkings.length > 0) {
+              html += `<div style="margin-top:8px;"><strong>Portion markings found:</strong></div>`;
+              sr.portionMarkings.forEach(p => {
+                const marks = p.marks.map(m => m.mark).join(', ');
+                html += `<div class="result-item" style="font-size:0.85rem;">Para ${p.paragraph}: ${marks} — "${p.preview}"</div>`;
+              });
+            }
+
+            // Unmarked paragraphs
+            if (sr.unmarkedParagraphs.length > 0) {
+              html += `<div style="margin-top:8px;"><strong class="warn">Unmarked paragraphs:</strong></div>`;
+              sr.unmarkedParagraphs.forEach(u => {
+                html += `<div class="result-item warn" style="font-size:0.85rem;">Para ${u.index}: "${u.preview}"</div>`;
+              });
+            }
+
+            // Classification patterns
+            if (sr.classifiedPatterns.length > 0) {
+              html += `<div style="margin-top:8px;"><strong>Control markings detected:</strong></div>`;
+              sr.classifiedPatterns.forEach(cp => {
+                html += `<div class="result-item" style="font-size:0.85rem;">${cp.label} (${cp.level}) — found ${cp.count}x</div>`;
+              });
+            }
+
+            // Mismatches
+            if (sr.mismatches.length > 0) {
+              html += `<div style="margin-top:8px;"><strong class="fail">Classification mismatches:</strong></div>`;
+              sr.mismatches.forEach(mm => {
+                html += `<div class="result-item fail">✘ ${mm.message}</div>`;
+              });
+            }
+
+            html += `</div>`;
+          }
+
+          if (data.warnings && data.warnings.length > 0) {
+            data.warnings.forEach(w => {
+              html += `<div class="result-item warn">⚠ ${w}</div>`;
+            });
+          }
+
+          resultBox.innerHTML = html;
+
+          // Load audit trail for this document
+          const auditRes = await authFetch(`/api/audit/${data.docId}`);
+          const auditData = await auditRes.json();
+          if (auditData.success) {
+            auditBox.innerHTML = auditData.logs.map(l =>
+              `<div>${l.action} — ${l.detail} (${l.created_at})</div>`
+            ).join("");
+          }
+
+          // Reset form
+          document.getElementById("uploadForm").reset();
+          document.getElementById("fileInfo").style.display = "none";
+          document.getElementById("confirmCheck").checked = false;
+          btn.disabled = true;
+          updateBannerChip();
+
+        } else {
+          resultBox.innerHTML = `<div class="result-item fail">✘ ${data.error}</div>`;
+          if (data.missing) {
+            data.missing.forEach(m => {
+              resultBox.innerHTML += `<div class="result-item fail">  — Missing: ${m}</div>`;
+            });
+          }
+          btn.disabled = false;
+          document.getElementById("confirmCheck").checked = true;
+        }
+      } catch (err) {
+        resultBox.innerHTML = `<div class="result-item fail">✘ Network error: ${err.message}</div>`;
+        btn.disabled = false;
+        document.getElementById("confirmCheck").checked = true;
+      }
+    });
+
+    // ── Load documents table ───────────────────────────────────
+    async function loadDocuments() {
+      const container = document.getElementById("docTableContainer");
+      container.innerHTML = '<p style="color:#999;">Loading...</p>';
+
+      try {
+        const res = await authFetch("/api/documents");
+        if (res.status === 401 || res.status === 403) { logout(); return; }
+        const data = await res.json();
+
+        if (data.count === 0) {
+          container.innerHTML = "<p>No documents uploaded yet.</p>";
+          return;
+        }
+
+        let html = `<table class="doc-table">
+          <tr>
+            <th>Doc ID</th><th>Title</th><th>Category</th>
+            <th>Banner</th><th>File</th><th>Size</th>
+            <th>Status</th><th>Date</th>
+          </tr>`;
+
+        data.documents.forEach(d => {
+          const sizeMB = (d.file_size / 1024).toFixed(1) + " KB";
+          html += `<tr>
+            <td>${d.doc_id}</td>
+            <td>${d.title}</td>
+            <td>${d.category}</td>
+            <td>${d.banner}</td>
+            <td>${d.file_name}</td>
+            <td>${sizeMB}</td>
+            <td><span class="status-badge status-${d.status}">${d.status.toUpperCase()}</span></td>
+            <td>${d.created_at}</td>
+          </tr>`;
+        });
+
+        html += "</table>";
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<p class="fail">Error loading documents: ${err.message}</p>`;
+      }
+    }
+
+    // ── Load full audit log ────────────────────────────────────
+    async function loadAllAudit() {
+      const box = document.getElementById("auditAllBox");
+      box.innerHTML = '<div style="color:#666;">Loading...</div>';
+
+      try {
+        const res = await authFetch("/api/audit");
+        if (res.status === 401 || res.status === 403) { logout(); return; }
+        const data = await res.json();
+
+        if (data.count === 0) {
+          box.innerHTML = "<div>No audit logs yet.</div>";
+          return;
+        }
+
+        box.innerHTML = data.logs.map(l =>
+          `<div>[${l.created_at}] <strong>${l.doc_id}</strong> — ${l.action}: ${l.detail}</div>`
+        ).join("");
+      } catch (err) {
+        box.innerHTML = `<div style="color:red;">Error: ${err.message}</div>`;
+      }
+    }
+
+    // ── Init ───────────────────────────────────────────────────
+    updateBannerChip();
+    checkAuth();
+  </script>
+</body>
+</html>
